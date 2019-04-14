@@ -1,3 +1,0 @@
-/home/mcasabella/CLionProjects/OS2019/TP1/UNIX sockets/src/server/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/mcasabella/CLionProjects/OS2019/TP1/UNIX sockets/src/server/cmake-build-debug/CMakeFiles/server.dir
-/home/mcasabella/CLionProjects/OS2019/TP1/UNIX sockets/src/server/cmake-build-debug/CMakeFiles/edit_cache.dir

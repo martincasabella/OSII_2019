@@ -1,0 +1,7 @@
+admin:admin
+tincho:tincho
+goku:goku
+unc:pipa
+jorge:azor
+azor:azhai
+

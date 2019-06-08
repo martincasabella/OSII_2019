@@ -1,14 +1,32 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
+use warnings;
 use strict;
-use warnings FATAL => 'all';
-use CGI;
-use CGI::Carp qw ( fatalsToBrowser );
+use CGI qw(:standard);
+use CGI::Carp qw(fatalsToBrowser);
 use File::Basename;
 use File::chdir;
+#Instancia CGI
+my $query = new CGI;
 
 
+#obtengo fecha como parametro del ususario
+my $date = $query->param("date");
+#my $date = "2019/025/01";
+my @words = split '/', $date;
+
+my $year = $words[0];
+my $day = sprintf '%03s', $words[1];
+my $hour = sprintf '%02s', $words[2];
 
 
+#Ejecuto comando aws, y parseo su salida, para asi imprimirla
+my $raw_out  = qx(/usr/bin/aws --no-sign-request s3 ls s3://noaa-goes16/ABI-L2-CMIPF/$year/$day/$hour/ 2>&1);
+
+#print `/usr/bin/aws --no-sign-request s3 ls s3://noaa-goes16/ABI-L2-CMIPF/2019/001/23/ 2>&1`;
+my @lines = split /\n/, $raw_out;
+
+
+#Muestro pagina html para seguir formato de las demas
 print "Content-type: text/html\n\n";
 
 print "<html>\n";
@@ -34,30 +52,29 @@ print "<div id=\"menubar\">";
 print "<ul id=\"menu\">";
 print "<li><a href=\"../index.html\">Home</a></li>";
 print "<li ><a href=\"system_info.pl\">System Resources</a></li>";
-print "<li><a href=\"form_init.pl\">GOES Info</a></li>";
+print "<li class=\"current\" ><a href=\"../goes.html\">GOES Info</a></li>";
 print "<li><a href=\"modules.pl\">System modules</a></li>";
-print "<li class=\"current\" ><a href=\"../upload_module.html\">Install module</a></li>";
+print "<li><a href=\"../upload_module.html\">Install module</a></li>";
 print "</ul>";
 print "</div>";
 print "</div>";
 
 
 print "<div id=\"content\">";
-print "<h1>Install or remove kernel module</h1>";
-print "<p> Module removed <p>";
+print "<h1>GOES 16 archives</h1>";
 
-chdir "../uploads";
-my $dirname = "/srv/http/uploads";
-opendir ( DIR, $dirname ) || die "Error in opening dir $dirname\n";
-my @files = grep(/\.ko$/,readdir(DIR));
-closedir(DIR);
-foreach my $file (@files) {
-      print `/usr/bin/sudo /usr/bin/rmmod $file`;
-      print `/usr/bin/sudo /usr/bin/rm $file`;
+print "$year\n";
+print "$day\n";
+print "$hour\n";
+print"<p><\p>";
+
+# Imprimo lista de archivos en el html para que el usuario vea lo solicitado
+foreach my $line (@lines) {
+    my @entry = split('\s+',$line,4);
+    print "$entry[0]      $entry[1]   $entry[2]       $entry[3] ";
+
+
 }
-
-
-
 
 print "      <p></p>";
 print "   <p></p>";
@@ -76,15 +93,6 @@ print " </div>";
 print " </div>";
 print " </body>";
 print "  </html>";
-
-
-
-
-
-
-
-
-
 
 
 

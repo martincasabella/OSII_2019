@@ -80,7 +80,7 @@ print "<div id=\"menubar\">";
 print "<ul id=\"menu\">";
 print "<li><a href=\"../index.html\">Home</a></li>";
 print "<li class=\"current\"><a href=\"system_info.pl\">System Resources</a></li>";
-print "<li><a href=\"form_init.pl\">GOES Info</a></li>";
+print "<li><a href=\"../goes.html\">GOES Info</a></li>";
 print "<li><a href=\"modules.pl\">System modules</a></li>";
 print "<li><a href=\"../upload_module.html\">Install module</a></li>";
 print "</ul>";

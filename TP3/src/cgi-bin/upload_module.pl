@@ -33,8 +33,8 @@ print "</div>";
 print "<div id=\"menubar\">";
 print "<ul id=\"menu\">";
 print "<li><a href=\"../index.html\">Home</a></li>";
-print "<li ><a href=\"cgi-bin/system_info.pl\">System Resources</a></li>";
-print "<li><a href=\"form_init.pl\">GOES Info</a></li>";
+print "<li ><a href=\"system_info.pl\">System Resources</a></li>";
+print "<li><a href=\"../goes.html\">GOES Info</a></li>";
 print "<li><a href=\"modules.pl\">System modules</a></li>";
 print "<li class=\"current\" ><a href=\"../upload_module.html\">Install module</a></li>";
 print "</ul>";
@@ -54,6 +54,8 @@ my $upload_dir = "/srv/http/uploads";
 my $query = new CGI;
 my $filename = $query->param("module");
 
+#COn el parametro module recibido (y archivo) procedo a validarlo
+
 if ( !$filename ) {
     # print $query->header ( );
     # print "There was a problem uploading your photo (try a smaller file).";
@@ -61,6 +63,8 @@ if ( !$filename ) {
     exit;
 }
 
+
+#Parseo la extension
 my ( $name, $path, $extension ) = fileparse ( $filename, '..*' );
 $filename = $name . $extension;
 
@@ -75,7 +79,6 @@ else {
     die "<p> Not a module file<p>";
 }
 
-print "<p> Uploading module.. Please wait.. <p>";
 my $upload_filehandle = $query->upload("module");
 
 open ( UPLOADFILE, ">$upload_dir/$filename" ) or die "$!";

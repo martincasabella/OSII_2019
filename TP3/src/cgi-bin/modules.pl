@@ -1,15 +1,14 @@
 #!/usr/bin/perl
 use strict;
 use warnings FATAL => 'all';
+use lib qw<blib/lib blib/arch>;
+use CGI qw(:standard);
 
-use CGI qw/:standard/;
 
-my $q = CGI->new;
-my $year = $q->param('year');
-my $day = $q->param('day');
+#Obtengo lista de modulos
+my $out = qx(lsmod 2>&1);
+#my @lines = split /\n/, $out; #guardo en array lines, lista partida en \n
 
-my @response;
-my $c = 0;
 
 print "Content-type: text/html\n\n";
 
@@ -24,7 +23,6 @@ print "<link rel=\"stylesheet\" type=\"text/css\" href=\"http://fonts.googleapis
 print "<link rel=\"stylesheet\" type=\"text/css\" href=\"../style/style.css\" />";
 print "</head>";
 
-
 print "<body>";
 <body bgcolor="#ff69b4" value="F" >;
 print "<div id=\"main\">";
@@ -34,52 +32,36 @@ print "<h1>Sistemas Operativos II</h1>";
 print "</div>";
 print "<div id=\"menubar\">";
 print "<ul id=\"menu\">";
-print "<li><a href=\"http://192.168.0.45/index.html\">Home</a></li>";
-print "<li><a href=\"http://192.168.0.45/cgi-bin/system_info.pl\">System Resources</a></li>";
-print "<li class=\"current\"><a  href=\"http://192.168.0.45/cgi-bin/form_init.pl\">GOES Info</a></li>";
-print "<li><a href=\"cgi-bin/kmod.cgi\">Modules</a></li>";
+;
+
+print "<li><a href=\"../index.html\">Home</a></li>";
+print "<li><a href=\"system_info.pl\">System Resources</a></li>";
+print "<li><a href=\"../goes.html\">GOES Info</a></li>";
+print "<li class=\"current\"><a href=\"modules.pl\">System modules</a></li>";
+print "<li><a href=\"../upload_module.html\">Install module</a></li>";
 print "</ul>";
 print "</div>";
 print "</div>";
 
-
 print "<div id=\"content\">";
-print "<h1>GOES Info</h1>";
-print "      <p></p>";
-print "   <p></p>";
+print "<h1>Installed system modules</h1>";
 
-print  start_html('Form Test');
 
-if ($year && $day) {
+#Parseo salida lsmod y la muestro en pantalla
+my @lines = split /\n/, $out;
 
-    my $raw_out  = qx(aws --no-sign-request s3 ls s3://noaa-goes16/ABI-L2-CMIPF/$year/$day/ | grep M3C13");
-    my @lines = split /\n/, $raw_out;
-    foreach my $line (@lines) {
-        my @entry = split('\s+',$line,4);
-        $response[$c] = \@entry;
-        print "@response";
-        $c++;
+#Ssimplemente para obviar la primera linea de salida
+my $first = 1;
+foreach my $line (@lines) {
+    my @entry = split('\s+',$line,3);
+
+    if ($first==1){
+        $first = 0;
+    }else{
+        print "<p> Module:   $entry[0]  &nbsp;  Size:   $entry[1]  &nbsp; Used by:   $entry[2] ";
     }
-
-
-
-} else {
-    print start_form;
-    print "        <p></p>";
-    print "Year: ", textfield('year'), br;
-    print "        <p></p>";
-    print "        <p></p>";
-    print "        <p></p>";
-    print "Day: ", textfield('day'), br;
-    print "        <p></p>";
-   print submit;
-       print end_form;
 }
-print "      <p></p>";
-print end_html;
-print "      <p></p>";
-print "    <p></p>";
-print "        <p></p>";
+
 
 print "</div>";
 print "</div>";
@@ -92,34 +74,4 @@ print " </div>";
 print " </div>";
 print " </body>";
 print "  </html>";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

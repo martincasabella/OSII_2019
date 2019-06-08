@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+<!--Pagina que se muestra al seleccionar la pestana Install MOdule. Permite al usuario cargar un modulo
+de kernel compilado, y enviarlo al servidor. De ser valido, se instala. Caso contrario, avisa que no es
+archivo tipo modulo y no procede a cargarlo ni a instalarlo.
+
+A su vez, se puede eliminar un modulo previamente enviado y cargado. SI no existe en la carpeta del servidor,
+no hara nada. SI el modulo existe, haciendo referencia a que previamente se cargo, se remueve, y se elimina
+el archivo .ko perviamente cargado.
+-->
+
+<head>
+    <title>Sistemas Operativos II</title>
+    <meta name="description" content="website description" />
+    <meta name="keywords" content="website keywords, website keywords" />
+    <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine&amp;v1" />
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz" />
+    <link rel="stylesheet" type="text/css" href="style/style.css" />
+</head>
+
+<body>
+<div id="main">
+    <div id="header">
+        <div id="logo">
+            <h1>Sistemas Operativos II</h1>
+        </div>
+        <div id="menubar">
+            <ul id="menu">
+                <!-- put class="current" in the li tag for the selected page - to highlight which page you're on -->
+                <li><a href="index.html">Home</a></li>
+                <li><a href="cgi-bin/system_info.pl">System Resources</a></li>
+                <li><a href="goes.html">GOES Info</a></li>
+                <li><a href="cgi-bin/modules.pl">System modules</a></li>
+                <li class="current">><a href="upload_module.html">Install module</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="content">
+
+        <!-- insert the page content here -->
+        <h1>Install or remove kernel module</h1>
+        <!--Con el archivo seleccionado se llama al script de perl-->
+        <form action="/cgi-bin/upload_module.pl" method="post" enctype="multipart/form-data">
+        <p>File to upload: <input type="file" name="module" /></p>
+        <p><input class="w3-button" type="submit" name="Submit" value="  Upload module " /></p>
+        </form>
+        <p><a class="w3-button" href="cgi-bin/rm_module.pl">Delete uploaded module</a></p>
+        </div>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+    </div>
+</div>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<div id="footer">
+    Martin Casabella</p>martin.casabella@alumnos.unc.edu.ar</p>
+    <!--      <img src="icons/UNClogo.jpg" style="width:250px;height:100px;" >-->
+</div>
+</div>
+</body>
+</html>
+
+
+
